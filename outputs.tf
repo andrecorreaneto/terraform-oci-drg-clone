@@ -15,7 +15,7 @@ output "drg_display_name" {
 # Useful for module composition.
 output "drg_all_attributes" {
   description = "all attributes of created drg"
-  value       = { for k, v in(length(data.oci_core_drgs.drg_data.drgs) == 0 ? oci_core_drg.drg[0] : data.oci_core_drgs.drg_data.drgs[0]) : k => v }
+  value       = { for k, v in(length(data.oci_core_drgs.drg_data.drgs) == 0 ? (length(oci_core_drg.drg) > 0 ? oci_core_drg.drg[0] : {}) : data.oci_core_drgs.drg_data.drgs[0]) : k => v }
 }
 
 output "drg_attachment_all_attributes" {
