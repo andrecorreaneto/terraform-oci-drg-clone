@@ -25,13 +25,7 @@ output "drg_attachment_all_attributes" {
 
 output "drg_summary" {
   description = "drg information summary"
-  value = {
-    (length(data.oci_core_drgs.drg_data.drgs) == 0 ? oci_core_drg.drg[0].display_name : data.oci_core_drgs.drg_data.drgs[0].display_name) = {
-      drg_id          = length(data.oci_core_drgs.drg_data.drgs) == 0 ? oci_core_drg.drg[0].id : data.oci_core_drgs.drg_data.drgs[0].id
-      vcn_attachments = { for k, v in oci_core_drg_attachment.vcns : k => v.network_details[0].id }
-
-    }
-  }
+  value = length(data.oci_core_drgs.drg_data.drgs) > 0 ? { id : data.oci_core_drgs.drg_data.drgs[0].id, vcn_attachments = { for k, v in oci_core_drg_attachment.vcns : k => v.network_details[0].id }}  : length(oci_core_drg.drg) > 0 ? { id : oci_core_drg.drg[0].id, vcn_attachments = { for k, v in oci_core_drg_attachment.vcns : k => v.network_details[0].id }} : null
 }
 
 # RPCS
